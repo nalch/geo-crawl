@@ -14,5 +14,6 @@ GEOCACHE_MAPPING = {
     'difficulty': '//*[@id="ctl00_ContentBody_uxLegendScale"]/img/attribute::src',
     'terrain': '//*[@id="ctl00_ContentBody_Localize12"]/img/attribute::src',
     'size': '//*[@id="ctl00_ContentBody_size"]/p/span/img/attribute::src',
-    'coordinates': '//*[@id="uxLatLon"]//text()'
+    'coordinates': '//*[@id="uxLatLon"]//text()',
+    'archived': 'boolean(//*[@id="divContentMain"]/div[3]/ul/li[contains(text(), \'This cache has been archived\')])'
 }

@@ -1,5 +1,3 @@
-import os
-
 from datetime import datetime
 
 from scrapy import (
@@ -21,24 +19,33 @@ from geocrawl.xpath_mappings import (
     SHORTCACHE_MAPPING
 )
 
+SIGNAL_NAMES = [var for var in vars(signals) if not var.startswith('_')]
+
 
 class ShortGeocachingSpider(Spider):
-    name = 'geocaching_spider'
+    name = 'short_geocaching_spider'
     start_urls = [STARTURL]
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super(ShortGeocachingSpider, cls).from_crawler(crawler, *args, **kwargs)
+
         try:
-            crawler.signals.connect(kwargs['on_item_scraped'], signal=signals.item_scraped)
+            for signame in filter(lambda sn: getattr(kwargs, sn, False), SIGNAL_NAMES):
+                crawler.signals.connect(kwargs['on_' + signame], signal=getattr(signals, signame))
         except KeyError:
             pass
         return spider
 
     def parse(self, response):
+        username = self.settings.attributes['GC_USERNAME'].value
+        password = self.settings.attributes['GC_PASSWORD'].value
         return FormRequest.from_response(
             response,
-            formdata={'Username': os.environ['GEO-CRAWL-USERNAME'], 'Password': os.environ['GEO-CRAWL-PASSWORD']},
+            formdata={
+                'Username': username,
+                'Password': password
+            },
             callback=self.parse_logs
         )
 
@@ -56,6 +63,7 @@ class ShortGeocachingSpider(Spider):
 
 
 class GeocachingSpider(ShortGeocachingSpider):
+    name = 'geocaching_spider'
 
     def parse_logs(self, response):
         for short_cache in super(GeocachingSpider, self).parse_logs(response):

@@ -12,3 +12,4 @@ class Geocache(LastUpdatedMixin):
     difficulty = scrapy.Field()
     owner = scrapy.Field()
     coordinates = scrapy.Field()
+    archived = scrapy.Field()

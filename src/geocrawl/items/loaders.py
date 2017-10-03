@@ -13,7 +13,7 @@ from scrapy.loader.processors import (
 
 
 def value_strip(value):
-    if not isinstance(value, str):
+    if not isinstance(value, basestring):
         return value
     return value.strip()
 

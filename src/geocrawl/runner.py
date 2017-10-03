@@ -1,4 +1,5 @@
 from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
 
 from spiders.geo_spider import (
     GeocachingSpider,
@@ -15,22 +16,18 @@ def print_item_title(item, response, spider):
 
 
 def get_all(**kwargs):
-    process = CrawlerProcess({
-        'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
-    })
-
+    process = CrawlerProcess(get_project_settings())
     process.crawl(GeocachingSpider, **kwargs)
     process.start()
 
 
 def get_short_caches(**kwargs):
-    settings = {'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'}
-    process = CrawlerProcess(settings)
-
+    process = CrawlerProcess(get_project_settings())
     process.crawl(ShortGeocachingSpider, **kwargs)
     process.start()
 
 
-# get_all(on_item_scraped=print_item_title)
-get_short_caches(on_item_scraped=print_item_title)
+if __name__ == '__main__':
+    #get_all(on_item_scraped=print_item_title)
+    get_short_caches(on_item_scraped=print_item_title)
 
