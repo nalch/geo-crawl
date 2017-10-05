@@ -22,17 +22,16 @@ from geocrawl.xpath_mappings import (
 SIGNAL_NAMES = [var for var in vars(signals) if not var.startswith('_')]
 
 
-class ShortGeocachingSpider(Spider):
-    name = 'short_geocaching_spider'
+class GeoLoginSpider(Spider):
     start_urls = [STARTURL]
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(ShortGeocachingSpider, cls).from_crawler(crawler, *args, **kwargs)
-
+        spider = super(GeoLoginSpider, cls).from_crawler(crawler, *args, **kwargs)
         try:
-            for signame in filter(lambda sn: getattr(kwargs, sn, False), SIGNAL_NAMES):
-                crawler.signals.connect(kwargs['on_' + signame], signal=getattr(signals, signame))
+            passed_signal_handler = filter(lambda sn: 'on_{}'.format(sn) in kwargs.keys(), SIGNAL_NAMES)
+            for signame in passed_signal_handler:
+                crawler.signals.connect(kwargs['on_{}'.format(signame)], signal=getattr(signals, signame))
         except KeyError:
             pass
         return spider
@@ -46,10 +45,17 @@ class ShortGeocachingSpider(Spider):
                 'Username': username,
                 'Password': password
             },
-            callback=self.parse_logs
+            callback=self.process_login_response
         )
 
-    def parse_logs(self, response):
+    def process_login_response(self, response):
+        pass
+
+
+class ShortGeocachingSpider(GeoLoginSpider):
+    name = 'short_geocaching_spider'
+
+    def process_login_response(self, response):
         for row in response.css('#divContentMain table.Table tr'):
             yield self.parse_short_cache(row)
 
@@ -65,8 +71,8 @@ class ShortGeocachingSpider(Spider):
 class GeocachingSpider(ShortGeocachingSpider):
     name = 'geocaching_spider'
 
-    def parse_logs(self, response):
-        for short_cache in super(GeocachingSpider, self).parse_logs(response):
+    def process_login_response(self, response):
+        for short_cache in super(GeocachingSpider, self).process_login_response(response):
             yield response.follow(short_cache['detail_link'], self.parse_cache_details)
 
     def parse_cache_details(self, response):
