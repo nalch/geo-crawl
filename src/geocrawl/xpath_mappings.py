@@ -17,3 +17,10 @@ GEOCACHE_MAPPING = {
     'coordinates': '//*[@id="uxLatLon"]//text()',
     'archived': 'boolean(//*[@id="divContentMain"]/div[3]/ul/li[contains(text(), \'This cache has been archived\')])'
 }
+
+SOUVENIR_ENTRY = '//*[@id="divContentMain"]/div[@class="ProfileSouvenirsList"]/div[starts-with(@id, "souvenir")]'
+SOUVENIR_MAPPING = {
+    'title': 'a[1]/attribute::title',
+    'image_url': 'a[1]/img[1]/attribute::src',
+    'aquired_on': './text()[3]'
+}

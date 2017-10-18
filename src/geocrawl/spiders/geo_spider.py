@@ -8,15 +8,22 @@ from scrapy import (
 
 from geocrawl.items import (
     Geocache,
-    ShortCache
+    ShortCache,
+    Souvenir
 )
 from geocrawl.items.loaders import TextValueLoader
 
-from geocrawl.urls import STARTURL
+from geocrawl.urls import (
+    LOGS_URL,
+    SOUVENIR_URL,
+    STARTURL
+)
 
 from geocrawl.xpath_mappings import (
     GEOCACHE_MAPPING,
-    SHORTCACHE_MAPPING
+    SHORTCACHE_MAPPING,
+    SOUVENIR_ENTRY,
+    SOUVENIR_MAPPING
 )
 
 SIGNAL_NAMES = [var for var in vars(signals) if not var.startswith('_')]
@@ -54,6 +61,7 @@ class GeoLoginSpider(Spider):
 
 class ShortGeocachingSpider(GeoLoginSpider):
     name = 'short_geocaching_spider'
+    start_urls = ['{}{}'.format(STARTURL, LOGS_URL)]
 
     def process_login_response(self, response):
         for row in response.css('#divContentMain table.Table tr'):
@@ -82,3 +90,18 @@ class GeocachingSpider(ShortGeocachingSpider):
 
         gc_item.add_value('last_updated', datetime.now())
         return gc_item.load_item()
+
+
+class SouvenirGeocachingSpider(GeoLoginSpider):
+    name = 'souvenir_geocaching_spider'
+    start_urls = ['{}{}'.format(STARTURL, SOUVENIR_URL)]
+
+    def process_login_response(self, response):
+        print(len(response.xpath(SOUVENIR_ENTRY)))
+        for souvenir in response.xpath(SOUVENIR_ENTRY):
+            sc_item = TextValueLoader(item=Souvenir(), selector=souvenir)
+            for field, xpath_selector in SOUVENIR_MAPPING.items():
+                sc_item.add_xpath(field, xpath_selector)
+
+            sc_item.add_value('last_updated', datetime.now())
+            yield sc_item.load_item()
