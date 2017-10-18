@@ -4,7 +4,7 @@ from scrapy.utils.project import get_project_settings
 from spiders.geo_spider import (
     GeocachingSpider,
     ShortGeocachingSpider,
-    SouvenirGeocachingSpider
+    ShortSouvenirGeocachingSpider
 )
 
 
@@ -30,7 +30,7 @@ def get_short_caches(**kwargs):
 
 def get_souvenirs(**kwargs):
     process = CrawlerProcess(get_project_settings())
-    process.crawl(SouvenirGeocachingSpider, **kwargs)
+    process.crawl(ShortSouvenirGeocachingSpider, **kwargs)
     process.start()
 
 

@@ -9,7 +9,7 @@ from scrapy import (
 from geocrawl.items import (
     Geocache,
     ShortCache,
-    Souvenir
+    ShortSouvenir
 )
 from geocrawl.items.loaders import TextValueLoader
 
@@ -92,14 +92,13 @@ class GeocachingSpider(ShortGeocachingSpider):
         return gc_item.load_item()
 
 
-class SouvenirGeocachingSpider(GeoLoginSpider):
-    name = 'souvenir_geocaching_spider'
+class ShortSouvenirGeocachingSpider(GeoLoginSpider):
+    name = 'short_souvenir_geocaching_spider'
     start_urls = ['{}{}'.format(STARTURL, SOUVENIR_URL)]
 
     def process_login_response(self, response):
-        print(len(response.xpath(SOUVENIR_ENTRY)))
         for souvenir in response.xpath(SOUVENIR_ENTRY):
-            sc_item = TextValueLoader(item=Souvenir(), selector=souvenir)
+            sc_item = TextValueLoader(item=ShortSouvenir(), selector=souvenir)
             for field, xpath_selector in SOUVENIR_MAPPING.items():
                 sc_item.add_xpath(field, xpath_selector)
 
