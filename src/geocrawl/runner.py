@@ -1,7 +1,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from spiders.geo_spider import (
+from .spiders.geo_spider import (
     GeocachingSpider,
     ShortGeocachingSpider,
     ShortSouvenirGeocachingSpider,
@@ -42,7 +42,7 @@ def get_souvenirs(**kwargs):
 
 
 if __name__ == '__main__':
-    #get_all(on_item_scraped=print_item_title)
-    #get_short_caches(on_item_scraped=print_item_title)
-    #get_short_souvenirs(on_item_scraped=print_item_title)
+    # get_all(on_item_scraped=print_item_title)
+    # get_short_caches(on_item_scraped=print_item_title)
+    # get_short_souvenirs(on_item_scraped=print_item_title)
     get_souvenirs(on_item_scraped=print_item_title)
