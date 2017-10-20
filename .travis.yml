@@ -5,8 +5,9 @@ python:
 
 before_install:
     - pip install -r requirements.txt
+    - pip install -e .
     - pip install --upgrade pytest
-    - pip install pytest pytest-cov pytest-django model-mommy pytest-pep8
+    - pip install pytest pytest-cov pytest-django model-mommy pytest-pep8 pytest-pythonpath
 
 script:
     - py.test --pep8

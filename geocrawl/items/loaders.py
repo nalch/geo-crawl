@@ -16,7 +16,7 @@ SOUVENIR_REGEX = re.compile(r'\D*\s(\d{2}/\d{2}/\d{4})')
 
 
 def value_strip(value):
-    if not isinstance(value, basestring):
+    if not isinstance(value, str):
         return value
     return value.strip()
 

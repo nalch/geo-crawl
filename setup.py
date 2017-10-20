@@ -3,9 +3,10 @@ from distutils.core import setup
 VERSION = '0.1'
 
 setup(
-    name='geo-crawl',
-    packages=['geo-crawl'],
+    name='geocrawl',
+    packages=['geocrawl'],
     version=VERSION,
+    license='MIT',
     description='A library to stream geocaching related entities from the official website',
     author='Kristian Scholze',
     url='https://github.com/nalch/geo-crawl',
