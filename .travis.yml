@@ -1,0 +1,21 @@
+language: python
+
+python:
+    - "3.5.2"
+
+before_install:
+    - pip install -r requirements.txt
+    - pip install --upgrade pytest
+    - pip install pytest pytest-cov pytest-django model-mommy pytest-pep8
+
+script:
+    - py.test --pep8
+
+deploy:
+  provider: pypi
+  user: nalch
+  password:
+    secure: d4QZ1Yu4b0qwjfRkX81nc2RJaLN9MhtqYa0cBRbjW93vC9yPWyYkdU5M0pvaSWaDn6+uJ8Qejd39QgpBVsPq9Re8nQWuZDl8dwbgkR3Ro1XfJ6ecucksFJQ9oSvDj+hYMZkU1PQScrcilHsnxjkaAtejr3h/iV4aE+1jPDNYWCq6Xn7cFExl/4nJYqIoSljxZjoaJ6G2LwBI1+SFAfj1VitwyaAfHd9rbv1ptsPzaZXucOc6gnkmJZ4OKejubFhOgev9///IcVwDiKoMz4lzANrHpFEKby10Ds5He4UGZuxqe5DeMO5v2WMPrumlNa4Vz32WpvkesROeeYy/a+tbFktbNNbz88Hvh6q/SEE1Le2DuBWyDK7FDwCgaOqIo8vzIXjX2eB0fuxMQ+j1DBRYNJMYsYpwcYy6z6X691NSMbb/87CR1p5zrOO7MbRBazXif8l3W45cxKm6QHzGkeD6y3XsXlGfxNidbejSfvoFhrEPN8zHg91FcbMMWKm0fSLuQ531lCZGkjsyZG7QfJ4xXaUKw2v2aZjH50GrQLxPI/EcprxeMqacojgoHPzEPja8KrnX6SY8it0umxVdIrmegP2dE3fMs4+4svNk9goQwKAjGR4ygIdV2NcqqB5te4L/cyFyzz0OgcelCJtJX8jYEopvxZvXMlN18BO05UUOCTc=
+  on:
+    tags: true
+    branch: master
