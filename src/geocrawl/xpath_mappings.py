@@ -19,8 +19,17 @@ GEOCACHE_MAPPING = {
 }
 
 SOUVENIR_ENTRY = '//*[@id="divContentMain"]/div[@class="ProfileSouvenirsList"]/div[starts-with(@id, "souvenir")]'
-SOUVENIR_MAPPING = {
+SHORT_SOUVENIR_MAPPING = {
     'title': 'a[1]/attribute::title',
     'image_url': 'a[1]/img[1]/attribute::src',
-    'aquired_on': './text()[3]'
+    'aquired_on': './text()[3]',
+    'detail_link': 'a[1]/attribute::href'
+}
+
+SOUVENIR_MAPPING = {
+    'title': '//*[@id="ctl00_ContentBody_SouvenirDisplayControl1_uxTitle"]//text()',
+    'image': '//*[@id="ctl00_ContentBody_SouvenirDisplayControl1_uxLargeImage"]/attribute::src',
+    'artist': '//*[@id="ctl00_ContentBody_SouvenirDisplayControl1_uxArtistNameWrapper"]/text()',
+    'about_artist': '//*[@id="ctl00_ContentBody_SouvenirDisplayControl1_uxAboutTheArtist"]//text()',
+    'additional_information': '//*[@id="ctl00_ContentBody_SouvenirDisplayControl1_uxInformation"]//text()'
 }

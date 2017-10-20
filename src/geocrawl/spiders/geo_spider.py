@@ -9,7 +9,8 @@ from scrapy import (
 from geocrawl.items import (
     Geocache,
     ShortCache,
-    ShortSouvenir
+    ShortSouvenir,
+    Souvenir
 )
 from geocrawl.items.loaders import TextValueLoader
 
@@ -23,6 +24,7 @@ from geocrawl.xpath_mappings import (
     GEOCACHE_MAPPING,
     SHORTCACHE_MAPPING,
     SOUVENIR_ENTRY,
+    SHORT_SOUVENIR_MAPPING,
     SOUVENIR_MAPPING
 )
 
@@ -99,8 +101,24 @@ class ShortSouvenirGeocachingSpider(GeoLoginSpider):
     def process_login_response(self, response):
         for souvenir in response.xpath(SOUVENIR_ENTRY):
             sc_item = TextValueLoader(item=ShortSouvenir(), selector=souvenir)
-            for field, xpath_selector in SOUVENIR_MAPPING.items():
+            for field, xpath_selector in SHORT_SOUVENIR_MAPPING.items():
                 sc_item.add_xpath(field, xpath_selector)
 
             sc_item.add_value('last_updated', datetime.now())
             yield sc_item.load_item()
+
+
+class SouvenirGeocachingSpider(ShortSouvenirGeocachingSpider):
+    name = 'souvenir_geocaching_spider'
+
+    def process_login_response(self, response):
+        for short_souvenir in super(SouvenirGeocachingSpider, self).process_login_response(response):
+            yield response.follow(short_souvenir['detail_link'], self.parse_souvenir_details)
+
+    def parse_souvenir_details(self, response):
+        souvenir_item = TextValueLoader(item=Souvenir(), selector=response)
+        for field, xpath_selector in SOUVENIR_MAPPING.items():
+            souvenir_item.add_xpath(field, xpath_selector)
+
+        souvenir_item.add_value('last_updated', datetime.now())
+        return souvenir_item.load_item()
