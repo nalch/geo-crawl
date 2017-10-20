@@ -1,6 +1,6 @@
 from distutils.core import setup
 
-VERSION = '0.1'
+VERSION = '0.2'
 
 setup(
     name='geocrawl',
@@ -9,6 +9,7 @@ setup(
     license='MIT',
     description='A library to stream geocaching related entities from the official website',
     author='Kristian Scholze',
+    author_email='Scholze.Kristian@gmail.com',
     url='https://github.com/nalch/geo-crawl',
     download_url='https://github.com/nalch/geo-crawl/archive/{}.tar.gz'.format(VERSION),
     keywords=['scrapy', 'geocaching', 'cache'],
