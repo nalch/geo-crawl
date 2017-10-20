@@ -1,4 +1,4 @@
-# geo-crawl
+# geo-crawl ![Build status](https://travis-ci.org/nalch/geo-crawl.svg?branch=master)
 geocrawl is a utility for getting information about your geocaches from geocaching.com. As geocaching.com does not accept API access anymore and the API is borderline not usable for non-premium users this crawler provides third-party applications with their database.
 
 ## Usage
