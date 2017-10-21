@@ -46,13 +46,13 @@ class GeoLoginSpider(Spider):
         return spider
 
     def parse(self, response):
-        username = self.settings.attributes['GC_USERNAME'].value
-        password = self.settings.attributes['GC_PASSWORD'].value
+        self.username = getattr(self, 'username', self.settings.attributes['GC_USERNAME'].value)
+        self.password = getattr(self, 'password', self.settings.attributes['GC_PASSWORD'].value)
         return FormRequest.from_response(
             response,
             formdata={
-                'Username': username,
-                'Password': password
+                'Username': self.username,
+                'Password': self.password
             },
             callback=self.process_login_response
         )
@@ -74,7 +74,7 @@ class ShortGeocachingSpider(GeoLoginSpider):
         for field, xpath_selector in SHORTCACHE_MAPPING.items():
             sc_item.add_xpath(field, xpath_selector)
 
-        sc_item.add_value('last_updated', datetime.now())
+        sc_item.add_value('last_updated', datetime.now().isoformat())
         return sc_item.load_item()
 
 
@@ -90,7 +90,7 @@ class GeocachingSpider(ShortGeocachingSpider):
         for field, xpath_selector in GEOCACHE_MAPPING.items():
             gc_item.add_xpath(field, xpath_selector)
 
-        gc_item.add_value('last_updated', datetime.now())
+        gc_item.add_value('last_updated', datetime.now().isoformat())
         return gc_item.load_item()
 
 
@@ -104,7 +104,7 @@ class ShortSouvenirGeocachingSpider(GeoLoginSpider):
             for field, xpath_selector in SHORT_SOUVENIR_MAPPING.items():
                 sc_item.add_xpath(field, xpath_selector)
 
-            sc_item.add_value('last_updated', datetime.now())
+            sc_item.add_value('last_updated', datetime.now().isoformat())
             yield sc_item.load_item()
 
 
@@ -120,5 +120,5 @@ class SouvenirGeocachingSpider(ShortSouvenirGeocachingSpider):
         for field, xpath_selector in SOUVENIR_MAPPING.items():
             souvenir_item.add_xpath(field, xpath_selector)
 
-        souvenir_item.add_value('last_updated', datetime.now())
+        souvenir_item.add_value('last_updated', datetime.now().isoformat())
         return souvenir_item.load_item()
