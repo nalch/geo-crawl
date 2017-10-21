@@ -1,7 +1,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from .spiders.geo_spider import (
+from geocrawl.spiders.geo_spider import (
     GeocachingSpider,
     ShortGeocachingSpider,
     ShortSouvenirGeocachingSpider,
@@ -15,6 +15,10 @@ def print_item(item, response, spider):
 
 def print_item_title(item, response, spider):
     print(item['title'])
+
+
+def return_item_title(item, response, spider):
+    return item['title']
 
 
 def get_all(**kwargs):
