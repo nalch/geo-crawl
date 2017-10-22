@@ -46,8 +46,10 @@ class GeoLoginSpider(Spider):
         return spider
 
     def parse(self, response):
-        self.username = getattr(self, 'username', self.settings.attributes['GC_USERNAME'].value)
-        self.password = getattr(self, 'password', self.settings.attributes['GC_PASSWORD'].value)
+        if not hasattr(self, 'username'):
+            self.username = self.settings.attributes['GC_USERNAME'].value
+        if not hasattr(self, 'password'):
+            self.password = self.settings.attributes['GC_PASSWORD'].value
         return FormRequest.from_response(
             response,
             formdata={
