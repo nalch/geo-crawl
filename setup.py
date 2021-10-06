@@ -15,6 +15,6 @@ setup(
     keywords=['scrapy', 'geocaching', 'cache'],
     classifiers=[],
     install_requires=[
-        'scrapy==1.4.0'
+        'scrapy==1.8.1'
     ],
 )
